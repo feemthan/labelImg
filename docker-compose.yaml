@@ -1,0 +1,20 @@
+services:
+  labelimg:
+    image: tzutalin/py2qt4
+    container_name: labelimg
+    stdin_open: true
+    tty: true
+    user: "${UID:-1000}:${GID:-1000}"
+    working_dir: /app
+    environment:
+      - DISPLAY=unix${DISPLAY}
+    volumes:
+      - .:/app
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /etc/group:/etc/group:ro
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/shadow:/etc/shadow:ro
+      - /etc/sudoers.d:/etc/sudoers.d:ro
+      - /home/${USER}:/home/${USER}
+    command: bash -c "make qt4py2 && python labelImg.py"
+    network_mode: host
